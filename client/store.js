@@ -57,8 +57,8 @@ export const fetchMessages = () => {
 export const postNewMessageToServer = (message) => {
   return  async (dispatch) => {
     const newMessage = await axios.post('/api/messages', message);
-    const message = newMessage.data;
-    const action = gotNewMessageFromServer(message)
+    const newMessageData = newMessage.data;
+    const action = gotNewMessageFromServer(newMessageData)
     dispatch(action)
   }
 }

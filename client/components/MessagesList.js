@@ -3,6 +3,7 @@ import Message from './Message';
 import NewMessageEntry from './NewMessageEntry';
 import { connect } from 'react-redux'
 import { fetchMessages } from '../store'
+import { withRouter } from 'react-router-dom'
 
 class MessagesList extends Component {
 
@@ -25,7 +26,7 @@ class MessagesList extends Component {
         <ul className="media-list">
           { filteredMessages.map(message => <Message message={message} key={message.id} />) }
         </ul>
-        <NewMessageEntry />
+        <NewMessageEntry channelId={channelId} />
       </div>
     );
   }
@@ -43,4 +44,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessagesList)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MessagesList))

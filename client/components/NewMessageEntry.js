@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { writeMessage } from '../store';
+import { writeMessage, postNewMessageToServer } from '../store';
 
 
 class NewMessageEntry extends Component {
@@ -8,16 +8,24 @@ class NewMessageEntry extends Component {
   constructor () {
     super ()
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
     this.props.write(event.target.value);
   }
 
+  handleSubmit(event) {
+    event.preventDefault()
+
+    const content = this.props.newMessageEntry;
+    const channelId = this.props.channelId;
+    this.props.post({ content, channelId });
+  }
+
   render () {
-    console.log('this.props***', this.props);
     return (
-      <form id="new-message-form">
+      <form id="new-message-form" onSubmit={this.handleSubmit}>
         <div className="input-group input-group-lg">
           <input
             className="form-control"
@@ -45,6 +53,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     write: (input) => dispatch(writeMessage(input)),
+    post: (message) => dispatch(postNewMessageToServer(message))
   }
 }
 

@@ -2,14 +2,17 @@ import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import loggingMiddleware from 'redux-logger';
 import axios from 'axios'
+import socket from './socket'
 
 const GOT_MESSAGES_FROM_SERVER = 'GOT_MESSAGES_FROM_SERVER';
 const GOT_NEW_MESSAGE_FROM_SERVER = 'GOT_NEW_MESSAGE_FROM_SERVER';
 const WRITE_MESSAGE = 'WRITE_MESSAGE';
+const CHANGE_NAME_ENTRY = 'CHANGE_NAME_ENTRY'
 
 const initialState = {
   messages: [],
-  newMessageEntry: ''
+  newMessageEntry: '',
+  nameEntry: '',
 }
 
 function reducer (state = initialState, action) {
@@ -20,6 +23,8 @@ function reducer (state = initialState, action) {
       return {...state, messages: [...state.messages, action.message]};
     case WRITE_MESSAGE:
       return {...state, newMessageEntry: action.newMessageEntry};
+    case CHANGE_NAME_ENTRY:
+      return {...state, nameEntry: action.nameEntry};
     default : return state;
   }
 }
@@ -60,6 +65,14 @@ export const postNewMessageToServer = (message) => {
     const newMessageData = newMessage.data;
     const action = gotNewMessageFromServer(newMessageData)
     dispatch(action)
+    socket.emit('new-message', newMessageData)
+  }
+}
+
+export const changeNameEntry = (name) => {
+  return {
+    type: CHANGE_NAME_ENTRY,
+    nameEntry: name,
   }
 }
 

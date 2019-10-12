@@ -20,7 +20,8 @@ class NewMessageEntry extends Component {
 
     const content = this.props.newMessageEntry;
     const channelId = this.props.channelId;
-    this.props.post({ content, channelId });
+    const name = this.props.name;
+    this.props.post({ content, channelId, name });
   }
 
   render () {
@@ -47,6 +48,7 @@ class NewMessageEntry extends Component {
 const mapStateToProps = (state) => {
   return {
     newMessageEntry: state.newMessageEntry,
+    name: state.nameEntry,
   }
 }
 
